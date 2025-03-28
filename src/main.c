@@ -16,7 +16,6 @@ int main() {
   int generations = -1;
   getNumberInput(&generations, "Generations [inf]", 1, 1000000000, -1);
   clearLines(2);
-  // TODO: speed input
 
   Dimensions dimensions = {width, height};
 
