@@ -13,12 +13,26 @@ void clearBuffer(char *buffer, Dimensions dimensions) {
 }
 
 void printBuffer(char *buffer, Dimensions dimensions) {
+  int bufSize = (dimensions.width * 2 + 2) * dimensions.height + 1;
+  char *output = (char *)malloc(bufSize);
+  if (!output) {
+    fprintf(stderr, "Memory allocation failed\n");
+    return;
+  }
+
+  char *ptr = output;
   for (int y = 0; y < dimensions.height; y++) {
     for (int x = 0; x < dimensions.width; x++) {
-      printf("%c ", buffer[y * dimensions.width + x]);
+      *ptr++ = buffer[y * dimensions.width + x];
+      *ptr++ = ' ';
     }
-    printf("|\n");
+    *ptr++ = '|';
+    *ptr++ = '\n';
   }
+  *ptr = '\0';
+
+  printf("%s", output);
+  free(output);
 }
 
 bool cellIsLiving(char *buffer, int x, int y, Dimensions dimensions) {
