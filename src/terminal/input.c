@@ -27,14 +27,14 @@ void clearLines(int lines) {
   }
 }
 
-char getSingleCharInput() {
+char getCharKeyPress() {
   set_input_mode();
   char c = getchar();
   reset_input_mode();
   return c;
 }
 
-Input getControllerInput() {
+Input getKeyPress() {
   set_input_mode();
   char c;
 
@@ -67,7 +67,7 @@ Input getControllerInput() {
       return Quit;
     } else if (c == 0x20) {
       reset_input_mode();
-      return Enter;
+      return Space;
     } else if (c == 10) {
       reset_input_mode();
       return Enter;

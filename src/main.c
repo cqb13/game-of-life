@@ -12,8 +12,11 @@ int main() {
   clearLines(2);
   int height = -1;
   getNumberInput(&height, "Enter board height [50]", 0, 100, 50);
+  clearLines(2);
   int generations = -1;
   getNumberInput(&generations, "Generations [inf]", 1, 1000000000, -1);
+  clearLines(2);
+  // TODO: speed input
 
   Dimensions dimensions = {width, height};
 
@@ -24,12 +27,62 @@ int main() {
 
   clearBuffer(buffer, dimensions);
 
-  giveLife(buffer, 4, 2, dimensions);
-  giveLife(buffer, 3, 2, dimensions);
-  giveLife(buffer, 2, 2, dimensions);
-  giveLife(buffer, 3, 1, dimensions);
-  giveLife(buffer, 2, 1, dimensions);
-  giveLife(buffer, 1, 1, dimensions);
+  int running = 1;
+  int selectorX = width / 2;
+  int selectorY = height / 2;
+  printf("← ↑ ↓ →: Move Selector | Space: Toggle Cell | Enter: Run\n");
+  printBufferWithSelector(buffer, dimensions, selectorX, selectorY);
+  while (running == 1) {
+    clearLines(dimensions.height);
+    printBufferWithSelector(buffer, dimensions, selectorX, selectorY);
+    Input keyPress = getKeyPress();
+    switch (keyPress) {
+    case Left:
+      selectorX--;
+      if (selectorX < 0) {
+        selectorX = width - 1;
+      }
+      continue;
+    case Right:
+      selectorX++;
+      if (selectorX >= width) {
+        selectorX = 0;
+      }
+      continue;
+    case Up:
+      selectorY--;
+      if (selectorY < 0) {
+        selectorY = height - 1;
+      }
+      continue;
+    case Down:
+      selectorY++;
+      if (selectorY >= height) {
+        selectorY = 0;
+      }
+      continue;
+    case Space: {
+      bool liveCell = cellIsLiving(buffer, selectorX, selectorY, dimensions);
+
+      if (liveCell) {
+        killCell(buffer, selectorX, selectorY, dimensions);
+      } else {
+        giveLife(buffer, selectorX, selectorY, dimensions);
+      }
+      continue;
+    }
+    case Enter:
+      running = 0;
+      break;
+    case Quit:
+      exit(0);
+    case Invalid:
+      continue;
+    default:
+      continue;
+    }
+  }
+  clearLines(dimensions.height + 1);
 
   printBuffer(buffer, dimensions);
   bool useCopy = false;
@@ -48,7 +101,7 @@ int main() {
       step(buffer, copyBuffer, dimensions);
       printBuffer(copyBuffer, dimensions);
     }
-    usleep(400000);
+    usleep(200000);
     useCopy = !useCopy;
     if (generations != -1) {
       turns--;

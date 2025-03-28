@@ -16,6 +16,6 @@ typedef enum Input {
 void set_input_mode();
 void reset_input_mode();
 void clearLines(int lines);
-char getSingleCharKeyPress();
-Input getControllerKeyPress();
+char getCharKeyPress();
+Input getKeyPress();
 #endif
