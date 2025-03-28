@@ -4,12 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-void clearLines(int lines) {
-  for (int i = 0; i < lines; i++) {
-    printf("\033[A\033[K");
-  }
-}
-
 void clearBuffer(char *buffer, Dimensions dimensions) {
   for (int y = 0; y < dimensions.height; y++) {
     for (int x = 0; x < dimensions.width; x++) {
@@ -23,7 +17,7 @@ void printBuffer(char *buffer, Dimensions dimensions) {
     for (int x = 0; x < dimensions.width; x++) {
       printf("%c ", buffer[y * dimensions.width + x]);
     }
-    printf("\n");
+    printf("|\n");
   }
 }
 
@@ -36,6 +30,25 @@ bool cellIsLiving(char *buffer, int x, int y, Dimensions dimensions) {
     return false;
   } else {
     return true;
+  }
+}
+
+void printBufferWithSelector(char *buffer, Dimensions dimensions, int x,
+                             int y) {
+  for (int i = 0; i < dimensions.height; i++) {
+    for (int j = 0; j < dimensions.width; j++) {
+      bool liveCell = cellIsLiving(buffer, j, i, dimensions);
+      if (y == i && x == j) {
+        if (!liveCell) {
+          printf("\033[43m%c\033[0m ", *(buffer + i * dimensions.width + j));
+        } else {
+          printf("\033[1;33m%c\033[0m ", *(buffer + i * dimensions.width + j));
+        }
+      } else {
+        printf("%c ", *(buffer + i * dimensions.width + j));
+      }
+    }
+    printf("|\n");
   }
 }
 
