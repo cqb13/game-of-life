@@ -4,15 +4,14 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
 #include <unistd.h>
 
 int main() {
-  int width = -1;
-  getNumberInput(&width, "Enter board width [50]", 0, 100, 50);
-  clearLines(2);
-  int height = -1;
-  getNumberInput(&height, "Enter board height [50]", 0, 100, 50);
-  clearLines(2);
+  struct winsize w;
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+  int width = (int)w.ws_col / 2;
+  int height = (int)w.ws_row - 1;
   int generations = -1;
   getNumberInput(&generations, "Generations [inf]", 1, 1000000000, -1);
   clearLines(2);

@@ -13,7 +13,7 @@ void clearBuffer(char *buffer, Dimensions dimensions) {
 }
 
 void printBuffer(char *buffer, Dimensions dimensions) {
-  int bufSize = (dimensions.width * 2 + 2) * dimensions.height + 1;
+  int bufSize = (dimensions.width * 2 + 1) * dimensions.height + 1;
   char *output = (char *)malloc(bufSize);
   if (!output) {
     fprintf(stderr, "Memory allocation failed\n");
@@ -26,7 +26,6 @@ void printBuffer(char *buffer, Dimensions dimensions) {
       *ptr++ = buffer[y * dimensions.width + x];
       *ptr++ = ' ';
     }
-    *ptr++ = '|';
     *ptr++ = '\n';
   }
   *ptr = '\0';
@@ -62,7 +61,7 @@ void printBufferWithSelector(char *buffer, Dimensions dimensions, int x,
         printf("%c ", *(buffer + i * dimensions.width + j));
       }
     }
-    printf("|\n");
+    printf("\n");
   }
 }
 
