@@ -23,6 +23,11 @@ int main() {
   char *copyBuffer =
       (char *)malloc(dimensions.height * dimensions.width * sizeof(char));
 
+  if (!buffer || !copyBuffer) {
+    fprintf(stderr, "Memory allocation failed\n");
+    return 1;
+  }
+
   clearBuffer(buffer, dimensions);
 
   int running = 1;
